@@ -7,7 +7,7 @@ Protected Module SpecialFolders
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
+	#tag Method, Flags = &h1, Description = 52657475726E7320746865206170706C69636174696F6E20737570706F727420666F6C6465722E
 		Protected Function AppSupport() As FolderItem
 		  ///
 		  ' Returns the application support folder.
