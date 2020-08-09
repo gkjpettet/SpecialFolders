@@ -7,10 +7,11 @@ Protected Module SpecialFolders
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1, Description = 52657475726E7320746865206170706C69636174696F6E20737570706F727420666F6C6465722E
+	#tag Method, Flags = &h1, Description = 52657475726E7320746865206170706C69636174696F6E20737570706F727420666F6C64657220666F722074686973206170706C69636174696F6E2E2049742077696C6C2063726561746520697420696620697420646F6573206E6F7420616C72656164792065786973742E204D61792072657475726E204E696C2E
 		Protected Function AppSupport() As FolderItem
 		  ///
-		  ' Returns the application support folder.
+		  ' Returns the application support folder for this application. It will create it if it 
+		  ' does not already exist. May return Nil.
 		  '
 		  ' - Notes:
 		  ' Return a FolderItem with the path:
@@ -24,16 +25,23 @@ Protected Module SpecialFolders
 		  If f = Nil Then Return Nil
 		  
 		  #If TargetMacOS Then
-		    Return f.Child(App.BundleIdentifier)
+		    f = f.Child(App.BundleIdentifier)
 		    
 		  #ElseIf TargetWindows Then
-		    Return f.Child(ThisAppName)
+		    f = f.Child(ThisAppName)
 		    
 		  #ElseIf TargetLinux Then
-		    Return f.Child("." + ThisAppName)
-		    
+		    f = f.Child("." + ThisAppName)
 		  #EndIf
 		  
+		  If Not f.Exists Then
+		    f.CreateFolder
+		  End If
+		  
+		  Return f
+		  
+		  Exception e As IOException
+		    Return Nil
 		End Function
 	#tag EndMethod
 
